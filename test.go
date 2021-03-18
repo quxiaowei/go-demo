@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	exp := "channel_select"
+	exp := "channel_range"
 
 	switch exp {
 	case "structs":
