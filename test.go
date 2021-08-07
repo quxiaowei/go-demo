@@ -1,11 +1,15 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/quxiaowei/go-demo/examples"
 )
 
 func main() {
-	exp := "channel_range"
+	var exp string
+	fmt.Printf("Enter Example Name:")
+	fmt.Scanln(&exp)
 
 	switch exp {
 	case "structs":
@@ -30,5 +34,11 @@ func main() {
 		examples.ChannelSelect()
 	case "channel_range":
 		examples.ChannelRange()
+	case "steamline":
+		examples.Steamline(10, 20)
+	default:
+		fmt.Printf("no example named \"%s\"\n", exp)
+		println("...")
+		main()
 	}
 }

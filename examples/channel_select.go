@@ -24,14 +24,14 @@ func ChannelSelect() {
 	case msg1 := <-c1:
 		fmt.Println("received", msg1)
 	case <-time.After(5 * time.Second):
-		fmt.Println("timeout! Channel One")
+		fmt.Println("timeout! Channel-1")
 	}
 
 	select {
 	case msg2 := <-c2:
 		fmt.Println("received", msg2)
 	case <-time.After(5 * time.Second):
-		fmt.Println("timeout! Channel two")
+		fmt.Println("timeout! Channel-2")
 	}
 
 }

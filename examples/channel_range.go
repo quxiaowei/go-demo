@@ -2,6 +2,7 @@ package examples
 
 import (
 	"fmt"
+	"math/rand"
 	"strconv"
 	"time"
 )
@@ -11,20 +12,16 @@ func ChannelRange() {
 
 	go func() {
 		t := time.NewTicker(1 * time.Second)
-		for {
-			select {
-			case <-t.C:
-				fmt.Println(".")
-			}
+		for range t.C {
+			fmt.Println(".")
 		}
 	}()
 
 	go func() {
 		for i := 0; i < 10; i++ {
 			queue <- strconv.Itoa((i + 1))
+			time.Sleep(time.Duration(rand.Intn(2)) * time.Second)
 		}
-
-		<-time.After(10 * time.Second)
 		close(queue)
 		fmt.Println("channel closed!")
 	}()
