@@ -13,10 +13,10 @@ func GetWorkers(count int) []Worker {
 
 	name_list := []string{"Jone", "Jane", "Mike",
 		"Smith", "Lee", "Porter", "Shawn", "Seven", "Eason",
-		"Ben", "Brown", "Nick", "Petty", "Max", "Kate", "Eric",
+		"Ben", "Brown", "Bob", "Nick", "Petty", "Max", "Kate", "Eric",
 		"Carl", "Dick", "Eddie", "Harry", "Ivan", "Julie", "Lisa",
 		"Mary", "Neil", "Sandy", "Susan", "Tom", "Tim", "Simon",
-		"Anna", "Chalotte", "Cindy", "Davie", "Frank", "Lauras",
+		"Anna", "Coco", "Cindy", "Davie", "Frank", "Lauras",
 		"Lucy", "Nancy", "May", "Paul", "Sam", "Shirley", "Sean"}
 
 	result := make([]Worker, 0)
