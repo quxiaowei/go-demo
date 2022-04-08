@@ -12,7 +12,7 @@ func _worker(worker *Worker, jobs <-chan int, wg *sync.WaitGroup) {
 	for j := range jobs {
 		// take a rest
 		time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
-		jId := j + 1
+		jId := j
 		worker.jobId = jId
 		time.Sleep(time.Duration((rand.Intn(6) + 1)) * time.Second)
 		worker.jobId = 0
@@ -53,7 +53,7 @@ func Steamline(workerCount int, jobCount int) {
 	}()
 
 	for i := 0; i < jobCount; i++ {
-		jobs <- i
+		jobs <- i+1
 		wg.Add(1)
 	}
 
