@@ -20,8 +20,8 @@ func startWork(worker *Worker, jobPool <-chan Job, wg *sync.WaitGroup) {
 }
 
 func Steamline(workerCount int, jobCount int) {
-
 	var wg sync.WaitGroup
+	
 	jobPool := make(chan Job, jobCount)
 	workerList := GetWorkers(workerCount)
 
