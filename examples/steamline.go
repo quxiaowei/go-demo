@@ -8,14 +8,13 @@ import (
 	"time"
 )
 
-func _worker(worker *Worker, jobs <-chan int, wg *sync.WaitGroup) {
-	for j := range jobs {
+func startWork(worker *Worker, jobPool <-chan Job, wg *sync.WaitGroup) {
+	for job := range jobPool {
 		// take a rest
 		time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
-		jId := j
-		worker.jobId = jId
-		time.Sleep(time.Duration((rand.Intn(6) + 1)) * time.Second)
-		worker.jobId = 0
+		worker.job = &job
+		time.Sleep(time.Duration(job.load) * time.Second)
+		worker.job = nil
 		wg.Done()
 	}
 }
@@ -23,15 +22,16 @@ func _worker(worker *Worker, jobs <-chan int, wg *sync.WaitGroup) {
 func Steamline(workerCount int, jobCount int) {
 
 	var wg sync.WaitGroup
-	jobs := make(chan int, jobCount)
+	jobPool := make(chan Job, jobCount)
 	workerList := GetWorkers(workerCount)
 
 	fmt.Println(len(workerList), "WORKERs,", jobCount, "JOBs")
-
 	fmt.Println("START")
 
 	// Monitor Function
 	go func() {
+		var jobName string
+
 		for i := range workerList {
 			fmt.Printf("|%s\t", workerList[i].name)
 		}
@@ -39,12 +39,11 @@ func Steamline(workerCount int, jobCount int) {
 
 		ticker := time.NewTicker(500 * time.Millisecond)
 		for range ticker.C {
-
-			for i := range workerList {
-				worker := workerList[i]
-				jobName := "-"
-				if worker.jobId != 0 {
-					jobName = strconv.Itoa(worker.jobId)
+			for _, worker := range workerList {
+				if worker.job != nil {
+					jobName = strconv.Itoa(worker.job.id)
+				} else {
+					jobName = "-"
 				}
 				fmt.Printf("| %s\t", jobName)
 			}
@@ -52,13 +51,15 @@ func Steamline(workerCount int, jobCount int) {
 		}
 	}()
 
+	// init jobs
 	for i := 0; i < jobCount; i++ {
-		jobs <- i+1
+		jobPool <- Job{id: i + 1, load: rand.Intn(9) + 1}
 		wg.Add(1)
 	}
 
+	// workers start
 	for i := range workerList {
-		go _worker(&workerList[i], jobs, &wg)
+		go startWork(&workerList[i], jobPool, &wg)
 	}
 
 	// waiting

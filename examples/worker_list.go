@@ -4,9 +4,14 @@ import (
 	"math/rand"
 )
 
+type Job struct {
+	id   int
+	load int
+}
+
 type Worker struct {
-	name  string
-	jobId int
+	name string
+	job  *Job
 }
 
 func GetWorkers(count int) []Worker {
