@@ -36,6 +36,8 @@ func main() {
 		examples.ChannelRange()
 	case "steamline":
 		examples.Steamline(8, 20)
+	case "generic":
+		examples.Generic()
 	default:
 		fmt.Printf("no example named \"%s\"\n", exp)
 		println("...")
